@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/your/repo.git   # <-- CHANGE
+    repoURL: https://github.com/makenzy1/azure-k8s-from-zero.git   # <-- CHANGE
     targetRevision: HEAD
     path: kind/overlays/dev
   destination:
