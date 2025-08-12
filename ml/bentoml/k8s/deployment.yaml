@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: svc
-        image: docker.io/REPLACE_USERNAME/bento-iris:latest
+        image: docker.io/macpherson03/bento-iris:latest # <— CHANGE to your image
         ports:
         - containerPort: 3000
         readinessProbe:
