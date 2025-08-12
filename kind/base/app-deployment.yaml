@@ -15,14 +15,7 @@ spec:
     spec:
       containers:
       - name: fastapi
-        image: docker.io/library/python:3.11-slim
-        command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8080"]
-        workingDir: /app
+        image: docker.io/macpherson03/fastapi-sample:latest   # <— CHANGE to your image
         ports:
         - containerPort: 8080
-        volumeMounts:
-        - name: app-src
-          mountPath: /app
-      volumes:
-      - name: app-src
-        emptyDir: {}
+
