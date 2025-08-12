@@ -1,0 +1,12 @@
+#cloud-config
+package_update: true
+packages: [ nginx, python3-venv, git ]
+runcmd:
+  - mkdir -p /opt/fastapi
+  - cd /opt/fastapi && python3 -m venv .venv
+  - /opt/fastapi/.venv/bin/pip install fastapi uvicorn prometheus-fastapi-instrumentator
+  - ufw allow OpenSSH || true
+  - ufw allow 80 || true
+  - ufw allow 443 || true
+  - yes | ufw enable || true
+  - systemctl enable nginx && systemctl start nginx

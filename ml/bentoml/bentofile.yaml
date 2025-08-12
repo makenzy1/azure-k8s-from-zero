@@ -1,0 +1,10 @@
+service: "service:svc"
+labels:
+  owner: you
+include:
+  - "service.py"
+python:
+  packages:
+    - numpy
+    - scikit-learn
+    - prometheus-client

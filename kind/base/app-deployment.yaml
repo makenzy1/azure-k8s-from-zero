@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi
+  namespace: apps
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fastapi
+  template:
+    metadata:
+      labels:
+        app: fastapi
+    spec:
+      containers:
+      - name: fastapi
+        image: docker.io/library/python:3.11-slim
+        command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8080"]
+        workingDir: /app
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: app-src
+          mountPath: /app
+      volumes:
+      - name: app-src
+        emptyDir: {}

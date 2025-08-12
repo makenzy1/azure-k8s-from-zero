@@ -1,0 +1,41 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  REGISTRY: docker.io
+  DOCKER_USERNAME: macpherson03
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push FastAPI app image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./apps/fastapi
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.DOCKER_USERNAME }}/fastapi-sample:latest
+
+      - name: Build and push BentoML model image
+        run: |
+          cd ml/bentoml
+          python3 -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt bentoml
+          python train.py
+          bentoml build
+          bentoml containerize service:latest -t ${{ env.REGISTRY }}/${{ env.DOCKER_USERNAME }}/bento-iris:latest
+          docker push ${{ env.REGISTRY }}/${{ env.DOCKER_USERNAME }}/bento-iris:latest

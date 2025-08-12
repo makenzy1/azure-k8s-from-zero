@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bento-iris
+  namespace: apps
+  labels:
+    app: bento-iris
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bento-iris
+  template:
+    metadata:
+      labels:
+        app: bento-iris
+    spec:
+      containers:
+      - name: svc
+        image: docker.io/REPLACE_USERNAME/bento-iris:latest
+        ports:
+        - containerPort: 3000
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 3000
+          initialDelaySeconds: 20
+          periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bento-iris
+  namespace: apps
+  labels:
+    app: bento-iris
+spec:
+  selector:
+    app: bento-iris
+  ports:
+  - name: http
+    port: 80
+    targetPort: 3000

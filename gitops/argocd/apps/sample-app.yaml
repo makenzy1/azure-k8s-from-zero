@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sample-fastapi
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/your/repo.git   # <-- CHANGE
+    targetRevision: HEAD
+    path: kind/overlays/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: apps
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: fastapi
+  namespace: apps
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - apps-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: fastapi.apps.svc.cluster.local
+        port:
+          number: 80
