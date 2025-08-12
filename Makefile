@@ -1,6 +1,7 @@
 SHELL := /bin/bash
 
-REGISTRY ?= docker.io/your-username
+# REGISTRY ?= docker.io/your-username
+REGISTRY ?= docker.io/macpherson03
 APP_IMAGE ?= $(REGISTRY)/fastapi-sample:latest
 ML_IMAGE ?= $(REGISTRY)/bento-iris:latest
 

@@ -33,6 +33,17 @@ jobs:
           pip install -r requirements.txt
           pip install bentoml==1.3.19
 
+      # ✔ prevent 'latest' collision; version by short SHA
+      - name: Set model version
+        run: echo "MODEL_VERSION=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      # (Optional hardening) Clean a bad store if a previous run created a directory at 'latest'
+      - name: Clean corrupted 'latest' dir if present
+        run: |
+          if [ -d "$HOME/bentoml/models/iris_rf/latest" ]; then
+            rm -rf "$HOME/bentoml/models/iris_rf/latest"
+          fi
+
       - name: Train model and save to Bento store
         working-directory: ml/bentoml
         run: python train.py
